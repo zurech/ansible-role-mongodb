@@ -1,0 +1,41 @@
+---
+# https://docs.mongodb.com/manual/tutorial/install-mongodb-on-debian/
+# https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+
+- name: Install Helper Packages.
+  apt:
+    name: [gnupg, apt-transport-https]
+    state: present
+    update_cache: yes
+
+- name: Add Nodesource apt key.
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc
+    state: present
+  when: ansible_architecture == "x86_64"
+
+- name: Add Official MongoDB Repositories.
+  apt_repository:
+    repo: "deb http://repo.mongodb.org/apt/{{ ansible_distribution|lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb_version }} main"
+    state: present
+  register: mongo_repo
+  when: ansible_architecture == "x86_64"
+
+- name: Update apt cache if repo was added.
+  apt:
+    update_cache: yes
+  when: mongo_repo.changed and ansible_architecture == "x86_64"
+
+- name: Install MongoDB Server for x86_64 server architectures
+  apt:
+    name: mongodb-org
+    state: present
+    update_cache: yes
+  when: ansible_architecture == "x86_64"
+
+- name: Install MongoDB Server arm server architectures
+  apt:
+    name: mongodb
+    state: present
+    update_cache: yes
+  when: ansible_architecture == "armv7" # Find a way to use armv* to match with different versions of arm architecture

@@ -1,2 +1,16 @@
 ---
-# tasks file for mongodb
+# Variable setup.
+# - name: Include OS-Specific variables
+#   include_vars: "{{ ansible_os_family }}.yml"
+
+# Setup/install tasks.
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Copy mongodb.conf
+  template:
+    src: mongodb.conf.j2
+    dest: /etc/mongodb.conf

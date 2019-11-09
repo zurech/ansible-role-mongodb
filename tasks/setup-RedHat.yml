@@ -1,0 +1,18 @@
+---
+# https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/
+
+- name: Add MongoDB Official Repository
+  yum_repository:
+    name: MongoDB Repository
+    description: MongoDB Oficial Repository
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongodb_version }}/x86_64/
+    gpgcheck: yes
+    gpgkey: https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc
+  when: ansible_architecture == "x86_64"
+
+- name: Install MongoDB Server
+  yum:
+    name: mongodb-org
+    state: present
+    update_cache: yes
+  when: ansible_architecture == "x86_64"

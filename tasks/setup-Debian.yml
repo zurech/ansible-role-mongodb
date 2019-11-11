@@ -38,4 +38,4 @@
     name: mongodb
     state: present
     update_cache: yes
-  when: ansible_architecture == "armv7" # Find a way to use armv* to match with different versions of arm architecture
+  when: ansible_architecture == "armv7l" # Find a way to use armv* to match with different versions of arm architecture

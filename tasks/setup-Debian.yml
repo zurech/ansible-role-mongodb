@@ -33,7 +33,7 @@
     update_cache: yes
   when: ansible_architecture == "x86_64"
 
-- name: Install MongoDB Server arm server architectures
+- name: Install MongoDB Server for arm server architectures
   apt:
     name: mongodb
     state: present

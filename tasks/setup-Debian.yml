@@ -16,10 +16,17 @@
 
 - name: Add Official MongoDB Repositories.
   apt_repository:
+    repo: "deb [ arch=amd64 ] http://repo.mongodb.org/apt/{{ ansible_distribution|lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb_version }} multiverse"
+    state: present
+  register: mongo_repo
+  when: ansible_architecture == "x86_64" and ansible_distribution == "Ubuntu"
+
+- name: Add Official MongoDB Repositories.
+  apt_repository:
     repo: "deb http://repo.mongodb.org/apt/{{ ansible_distribution|lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb_version }} main"
     state: present
   register: mongo_repo
-  when: ansible_architecture == "x86_64"
+  when: ansible_architecture == "x86_64" and ansible_distribution == "Debian"
 
 - name: Update apt cache if repo was added.
   apt:
